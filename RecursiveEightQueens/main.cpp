@@ -12,15 +12,15 @@ const int UNASSIGN_VALUE = -1;
 const int NUMBER_ROWS = 8; // Number of rows in our chess board
 const int NUMBER_COLS = 8; // Number of columns in our chess board
 
-						   // RowPlacement is a vector of column queen assignments to each row.
-						   // If we assign a queen in column x to row y, then RowPlacement[y] = x.
-						   // We assume columns are numbered from 0 to NUMBER_COLS-1
+// RowPlacement is a vector of column queen assignments to each row.
+// If we assign a queen in column x to row y, then RowPlacement[y] = x.
+// We assume columns are numbered from 0 to NUMBER_COLS-1
 vector<int> RowPlacement(NUMBER_ROWS, UNASSIGN_VALUE); // Create NUMBER_ROWS element vector, initializing each element to the value "-1"
 
-													   /**
-													   *	This function checks if a previous assignment of a queen to a row
-													   *	will have a diagonal that invalidates this assigning a col_pos queen to row_pos.
-													   */
+/**
+*	This function checks if a previous assignment of a queen to a row
+*	will have a diagonal that invalidates this assigning a col_pos queen to row_pos.
+*/
 bool ValidPosition(int col_pos, int row_pos) {
 	for (int i = 0; i < RowPlacement.size(); ++i) {
 		if (i == row_pos) // we are only checking if another row assignment will make row_pos invalid
@@ -65,9 +65,9 @@ bool PlaceQueen(int column) {
 		// Try to assign this column's queen to a valid row
 		for (int row = 0; row < RowPlacement.size(); ++row) {
 
-			// FIXME: Check if this row has already been assigned
-			//        If RowPlacement[row] is not UNASSIGN_VALUE, we want to move to the next row
-
+			// If RowPlacement[row] is not UNASSIGN_VALUE, we want to move to the next row
+			if (RowPlacement[row] != -1) // means there is already a queen in this row
+				continue;
 
 			// Check if assigning a column queen to this row is valid
 			if (!ValidPosition(column, row)) // a diagonal invalidates this position
