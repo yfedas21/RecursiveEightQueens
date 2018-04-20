@@ -16,6 +16,7 @@ const int NUMBER_COLS = 8; // Number of columns in our chess board
 // If we assign a queen in column x to row y, then RowPlacement[y] = x.
 // We assume columns are numbered from 0 to NUMBER_COLS-1
 vector<int> RowPlacement(NUMBER_ROWS, UNASSIGN_VALUE); // Create NUMBER_ROWS element vector, initializing each element to the value "-1"
+vector<vector <int>> PlacementSolutions;
 
 /**
 *	This function checks if a previous assignment of a queen to a row
@@ -59,8 +60,12 @@ void DisplayBoard(vector<int> &Row)
 *	Recursive implementation of the solution to the eight-queens problem
 */
 bool PlaceQueen(int column) {
-	if (column == NUMBER_COLS) { // Base Condition
-		return true; // Successfully assigned all column queens in the board.  We can just return true.
+	if (PlacementSolutions.size() == 92) { // Base case
+		return true; // All 92 solutions are found
+	}
+	else if (column == NUMBER_COLS) { 
+		PlacementSolutions.push_back(RowPlacement);
+		return false; // Successfully assigned all column queens in the board.  We can just return true.
 	}
 	else {
 		// Try to assign this column's queen to a valid row
@@ -96,6 +101,8 @@ bool PlaceQueen(int column) {
 int main()
 {
 	PlaceQueen(0); // Begin the process of placing queens, starting at column 0
-	DisplayBoard(RowPlacement); // Display the chess board with the queen placements
+	for (int i = 0; i < 5; i++) { // Check if the solutions are unique (they are...)
+		DisplayBoard(PlacementSolutions[i]);
+	}
 	system("PAUSE");
 }
