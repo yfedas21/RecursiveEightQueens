@@ -40,7 +40,8 @@ void DisplayBoard(vector<int> &Row)
 {
 	for (int row = 0; row < NUMBER_ROWS; ++row) {
 		if (Row[row] == UNASSIGN_VALUE) {
-			cout << "ERROR!  Row has not been assigned\n";
+			cout << "ERROR!  Row " << row + 1 << " has not been assigned\n\n";
+			continue;
 		}
 		for (int col = 0; col < Row[row]; ++col) {
 			cout << " - ";
@@ -66,25 +67,28 @@ bool PlaceQueen(int column) {
 		for (int row = 0; row < RowPlacement.size(); ++row) {
 
 			// If RowPlacement[row] is not UNASSIGN_VALUE, we want to move to the next row
-			if (RowPlacement[row] != -1) // means there is already a queen in this row
+			if (RowPlacement[row] != UNASSIGN_VALUE) // means there is already a queen in this row
 				continue;
 
 			// Check if assigning a column queen to this row is valid
 			if (!ValidPosition(column, row)) // a diagonal invalidates this position
 				continue;
 
-			// FIXME: Assign column to Row[row]
+			// Assign column to Row[row]
+			RowPlacement[row] = column;
 
+			// Recursively call PlaceQueen to place a queen in the next column.
+			// Remember to check if the recursive call to placing the queen in the next column 
+			// was successful, i.e. it returned true.
+			// If it was successful, you can assume the assigment of this column's queen 
+			// to RowPlacement[row] was also successful, and hence return true here.
+			column++;
+			if (PlaceQueen(column)) {
+				return true;
+			}
 
-			// FIXME: Recursively call PlaceQueen to place a queen in the next column.
-			//        Remember to check if the recursive call to placing the queen in the next column 
-			//        was successful, i.e. it returned true.
-			//        If it was successful, you can assume the assigment of this column's queen 
-			//        to RowPlacement[row] was also successful, and hence return true here.
-
-
-			// FIXME: Unassign the assignment of the column's queen to this row, and try the next one
-
+			// Unassign the assignment of the column's queen to this row, and try the next one
+			RowPlacement[row] = UNASSIGN_VALUE;
 		}
 		return false; // Tried every available row, so it is time to call it quits
 	}
@@ -94,4 +98,5 @@ int main()
 {
 	PlaceQueen(0); // Begin the process of placing queens, starting at column 0
 	DisplayBoard(RowPlacement); // Display the chess board with the queen placements
+	system("PAUSE");
 }
