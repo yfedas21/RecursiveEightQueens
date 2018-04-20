@@ -82,13 +82,12 @@ bool PlaceQueen(int column) {
 			// was successful, i.e. it returned true.
 			// If it was successful, you can assume the assigment of this column's queen 
 			// to RowPlacement[row] was also successful, and hence return true here.
-			column++;
-			if (PlaceQueen(column)) {
+			if (PlaceQueen(column + 1)) {
 				return true;
 			}
 
 			// Unassign the assignment of the column's queen to this row, and try the next one
-			RowPlacement[row] = UNASSIGN_VALUE;
+			RowPlacement[row] = UNASSIGN_VALUE; 
 		}
 		return false; // Tried every available row, so it is time to call it quits
 	}
